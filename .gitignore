@@ -1,0 +1,44 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# --- uv / virtualenv ---
+# uv.lock is intentionally committed for reproducible installs.
+.venv/
+
+# --- Tool caches ---
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# --- Allure ---
+allure-results/
+allure-report/
+
+# --- Playwright artifacts ---
+test-results/
+playwright-report/
+traces/
+videos/
+screenshots/
+*.trace.zip
+
+# --- Locust ---
+load/reports/
+
+# --- Environment ---
+.env
+.env.*
+!.env.example
+
+# --- IDE / OS ---
+.idea/
+.vscode/
+*.swp
+.DS_Store
+Thumbs.db

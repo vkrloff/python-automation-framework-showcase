@@ -1,0 +1,84 @@
+[project]
+name = "juice-shop-qa"
+version = "0.1.0"
+description = "Test automation framework for OWASP Juice Shop (API, UI, load)."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "allure-pytest>=2.16.2",
+    "pydantic>=2.14.4",
+    "pydantic-settings>=2.16.3",
+    "pytest>=9.2.0",
+    "pytest-playwright>=0.10.0",
+    "requests>=2.34.2",
+]
+
+[build-system]
+requires = ["uv_build>=0.13.9,<0.14"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "framework"
+module-root = "src"
+
+# ---------------------------------------------------------------- ruff
+[tool.ruff]
+target-version = "py313"
+line-length = 100
+src = ["src", "tests", "load"]
+
+[tool.ruff.lint]
+select = [
+    "E", "W",   # pycodestyle
+    "F",        # pyflakes
+    "I",        # isort
+    "B",        # bugbear
+    "UP",       # pyupgrade
+    "SIM",      # simplify
+    "RUF",      # ruff-specific
+    "PT",       # pytest style
+    "N",        # naming
+    "ANN",      # annotations
+    "S",        # bandit (security)
+    "TC",       # type-checking imports
+    "PL",       # pylint
+    "DTZ",      # timezone-aware datetimes
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "PLR2004"]  # asserts and literal values are fine in tests
+
+# ---------------------------------------------------------------- mypy
+[tool.mypy]
+python_version = "3.13"
+strict = true
+warn_unreachable = true
+files = ["src", "tests", "load"]
+plugins = ["pydantic.mypy"]
+
+[tool.pydantic-mypy]
+init_forbid_extra = true
+init_typed = true
+warn_required_dynamic_aliases = true
+
+# ---------------------------------------------------------------- pytest
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra --strict-markers --strict-config --import-mode=importlib"
+xfail_strict = true
+markers = [
+    "api: API-level tests (requests)",
+    "ui: browser tests (Playwright)",
+    "smoke: fast critical-path subset",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=2.4.1",
+    "pre-commit>=4.7.0",
+    "ruff>=0.17.6",
+    "types-requests>=2.33.0.20261030",
+]
+load = [
+    "locust>=2.47.0",
+]
